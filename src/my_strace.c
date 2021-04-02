@@ -6,14 +6,20 @@
 */
 
 #include "../include/strace.h"
+#include "../include/syscall.h"
 
-int my_strace(int ac, char **av, char **envp)
+static void	catch_syscall(int pid, struct user_regs_struct *regs,
+                             int is_s, char *file_name)
+{
+    if (regs->orig_rax != -1)
+        printf("syscall %lld = 0x%llx\n", regs->orig_rax, regs->rax);
+}
+
+int my_strace(int ac, char **av, char **envp, int s_f)
 {
     pid_t pid;
     int status;
     int ret;
-    //long long int syscall;
-    //char *arg[] = {"ls", NULL};
     struct user_regs_struct u_in;
     struct rusage r_us;
 
@@ -23,40 +29,30 @@ int my_strace(int ac, char **av, char **envp)
     if (pid == 0) {
         ptrace(PTRACE_TRACEME, 0, 0, 0);
         //kill(getpid(), SIGSTOP);
-        ret = execve(av[1], NULL, NULL);
+        ret = execve(av[0], av, envp);
         if (ret == -1)
             perror("execve: ");
     } else {
+        int loop = 0;
+        siginfo_t sigget;
+        //for the first stop because of execve
         wait4(pid, &status, 0, &r_us);
+        while (loop == 0) {
+            ptrace(PTRACE_GETREGS, pid, NULL, &u_in);
+            ptrace(PTRACE_SINGLESTEP, pid, NULL, NULL);
+            wait4(pid, &status, 0, &r_us);
+            if (WEXITSTATUS(status) == 84)
+                return (84);
+            if (WIFSTOPPED(status))
+                catch_syscall(pid, &u_in, 0, "tanya");
+            if (WIFEXITED(status))
+                loop = 1;
+        }
+        ptrace(PTRACE_GETREGS, pid, NULL, &u_in);
+        printf("syscall %lld = %lld\n", u_in.rax, 999);
+        dprintf(2, "+++ exited with %d +++\n", WEXITSTATUS(status));
 
-            /*if (WIFSIGNALED(status)) {
-                printf("Child exit due to signal %d\n", WTERMSIG(status));
-                exit(0);
-            }
-            if (!WIFSTOPPED(status)) {
-                printf("wait() returned unhandled status 0x%x\n", status);
-                exit(0);
-            }*/
-
-
-            //if (WSTOPSIG(status) == SIGTRAP) {
-                //int sc_number = ptrace(PTRACE_PEEKUSER, pid, SC_NUMBER, NULL);
-                   //int sc_retcode = ptrace(PTRACE_PEEKUSER, pid, SC_RETCODE, NULL);
-            //}
-            while(WIFSTOPPED(status)) {
-                ptrace(PTRACE_GETREGS, pid, NULL, &u_in);
-                   //printf("SIGTRAP: syscall %ld, rc = %d\n", sc_number, sc_retcode);
-                  // system("ausyscall 5");
-                if (u_in.orig_rax != -1) {
-                    printf("syscall %d = ", u_in.orig_rax);
-                    printf("%lld\n", u_in.rax);
-                }
-                status = ptrace(PTRACE_SINGLESTEP, pid, 0, 0);
-                wait4(pid, &status, 0, &r_us);
-            }
-            if (WIFEXITED(status)) {
-                printf("+++ exited with %d +++\n", WEXITSTATUS(status));
-            }
+        return (0);
     }
     return (0);
 }

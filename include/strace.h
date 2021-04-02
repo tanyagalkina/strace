@@ -19,6 +19,7 @@
 #include <stdio.h>
 #include <sys/time.h>
 #include <sys/resource.h>
+#include <sys/syscall.h>
 #include <unistd.h>
 #include <string.h>
 #define SC_NUMBER  (8 * ORIG_RAX)
@@ -27,4 +28,4 @@
 
 
 int p_flag_loop(int pid);
-int my_strace(int ac, char **av, char **envp);
+int my_strace(int ac, char **av, char **envp, int s_f);
