@@ -9,8 +9,9 @@
 
 static char **get_args(int ac, int *s_f, char **av)
 {
-    if (ac > 2 && !strcmp(av[2], "-s"))
+    if (ac > 2 && !strcmp(av[1], "-s")) {
         *s_f = 1;
+    }
     return ((char **)&av[1 + *s_f]);
 
 
