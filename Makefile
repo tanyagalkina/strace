@@ -20,18 +20,18 @@ OBJS	= $(SRCS:.c=.o)
 
 CFLAGS += -W -Wall -Wextra
 
-all: $(NAME)
+all		: $(NAME)
 
-$(NAME): $(OBJS)
-	$(CC) $(OBJS) -o $(NAME) $(FLAGS)
+$(NAME)		: $(OBJS)
+		$(CC) $(OBJS) -o $(NAME) $(FLAGS)
 
 
 clean:
 	$(RM) $(OBJS)
 
 fclean: clean
-	$(RM) ./strace
-:
+	$(RM) ./strace:
+
 re: fclean all
 
 .PHONY: all strace clean fclean re
