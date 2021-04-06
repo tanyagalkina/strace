@@ -9,6 +9,7 @@
 #include <sys/ptrace.h>
 #include <sys/reg.h>
 #include <libelf.h>
+#include <stdbool.h>
 
 #include <fcntl.h>
 #include <stdlib.h>

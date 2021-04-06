@@ -11,8 +11,17 @@
 static void	catch_syscall(int pid, struct user_regs_struct *regs,
                              int is_s, char *file_name)
 {
-    if (regs->orig_rax != -1)
+    long long data = ptrace(PTRACE_PEEKTEXT, pid, regs->rip, NULL);
+    //if (data == 0x0F05)
+    unsigned char numb = (unsigned)0xFF & data;
+    unsigned char op = ((unsigned)0xFF00 & data) >> 8;
+    //if (numb == 0x00F && op == 0x05)
+        //printf("the next will be a syscall\n");
+        //printf("this is the num of the next op %d\n", op);
+    if (regs->orig_rax != -1) {
         printf("syscall %lld = 0x%llx\n", regs->orig_rax, regs->rax);
+        //printf("this is data:%llu", data);
+    }
 }
 
 int my_strace(int ac, char **av, char **envp, int s_f)
