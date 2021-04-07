@@ -42,7 +42,7 @@ void if_call(int pid, USR *regs, int is_s, char *path)
     //if (numb == 0x00F && op == 0x05)
         //printf("the next will be a syscall\n");
         //printf("this is the num of the next op %d\n", op);
-    if (regs->orig_rax != -1) {
+    if ((int)regs->orig_rax != -1) {
         printf("%s", table[regs->orig_rax].name);
         if (regs->rax == 60 || regs->rax == 231)
             printf("?\n");

@@ -7,6 +7,7 @@
 
 #include <sys/stat.h>
 #include "../include/strace.h"
+#include "../include/syscall.h"
 
 static char **get_args(int ac, int *s_f, char **av)
 {
