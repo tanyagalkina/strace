@@ -8,6 +8,16 @@
 #include "../include/strace.h"
 #include "../include/syscall.h"
 
+static void tail(USR u_in, int pid, int status, int s_f)
+{
+    ptrace(PTRACE_GETREGS, pid, NULL, &u_in);
+    if (s_f)
+        printf("%s(0) = ?\n", table[u_in.rax].name);
+    else
+        printf("%s(0x0) = ?\n", table[u_in.rax].name);
+    printf("+++ exited with %d +++\n", WEXITSTATUS(status));
+}
+
 int do_trace(int pid, int s_f, char **av)
 {
     int status;
@@ -25,12 +35,7 @@ int do_trace(int pid, int s_f, char **av)
         ptrace(PTRACE_SINGLESTEP, pid, NULL, NULL);
         wait4(pid, &status, 0, &r_us);
     }
-    ptrace(PTRACE_GETREGS, pid, NULL, &u_in);
-    if (s_f)
-        printf("%s(0) = ?\n", table[u_in.rax].name);
-    else
-        printf("%s(0x0) = ?\n", table[u_in.rax].name);
-    printf("+++ exited with %d +++\n", WEXITSTATUS(status));
+    tail(u_in, pid, status, s_f);
     return (0);
 }
 

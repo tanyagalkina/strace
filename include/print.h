@@ -9,7 +9,7 @@
 #include "strace.h"
 
 const print_t p_table[] = {
-        {"void", &p_nix},
+        {"void", NULL},
         {"char *", &p_str},
         {"int[2]", &p_pointer},
         {"char **", &p_str2d},

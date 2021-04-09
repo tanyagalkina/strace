@@ -47,7 +47,6 @@ void p_args(USR *regs, tools_t pr_tools);
 void p_str(unsigned long long reg, tools_t pr_tools);
 void p_str2d(unsigned long long reg, tools_t pr_tools);
 void p_unimplemented(unsigned long long reg, tools_t pr_tools);
-void p_nix(unsigned long long reg, tools_t pr_tools);
 void p_int(unsigned long long reg, tools_t pr_tools);
 void p_long(unsigned long long reg, tools_t pr_tools);
 void p_uint(unsigned long long reg, tools_t pr_tools);

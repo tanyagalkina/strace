@@ -1,5 +1,12 @@
+/*
+** EPITECH PROJECT, 2020
+** strace
+** File description:
+** header
+*/
 
 #pragma once
+
 typedef struct errno_s {
     char *macro;
     int error;
