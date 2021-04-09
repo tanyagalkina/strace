@@ -13,7 +13,9 @@ NAME	= strace
 
 SRCS	=	./src/main.c 		\
 		./src/p_flag_loop.c	\
-		./src/my_strace.c
+		./src/my_strace.c	\
+		./src/print.c		\
+		./src/print_funcs.c
 
 
 OBJS	= $(SRCS:.c=.o)

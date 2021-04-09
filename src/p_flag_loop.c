@@ -6,10 +6,11 @@
 */
 
 #include "../include/strace.h"
-#include "../include/syscall.h"
 
 int p_flag_loop(int pid)
 {
+    int ret = 0;
+    const char **av = {(const char **) "tanya"};
     if (getpgid(pid) < 0) {
         fprintf(stderr, \
 "strace: attach: ptrace(PTRACE_SEIZE, %d): No such process\n", pid);
@@ -21,5 +22,7 @@ int p_flag_loop(int pid)
         exit (84);
     }
     ptrace(PTRACE_INTERRUPT, pid, 0, 0);
-    return do_trace(pid);
+    ret = do_trace(pid, 0, av);
+    ptrace(PTRACE_DETACH, pid, 0, 0);
+    return (ret);
 }

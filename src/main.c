@@ -7,7 +7,6 @@
 
 #include <sys/stat.h>
 #include "../include/strace.h"
-#include "../include/syscall.h"
 
 static char **get_args(int ac, int *s_f, char **av)
 {
@@ -55,7 +54,7 @@ int main(int ac, char *av[], char **envp)
         fprintf(stderr, "Try 'strace --h' for more information.\n");
         return (84);
     }
-    if (ac == 2 && !strcmp(av[1], "--h"))
+    if (ac == 2 && (!strcmp(av[1], "--h") || !strcmp(av[1], "-h")))
         print_help();
     if (ac == 3 && !strcmp((av[1]), "-p") && is_pos_int(av[2]))
         return p_flag_loop(atoi(av[2]));
