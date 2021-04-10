@@ -32,7 +32,7 @@ unsigned long long int get_reg(USR *regs, int param_nb)
     }
 }
 
-static void print_arg(char *type, int nb, struct user_regs_struct *regs, tools_t pr_tools)
+static void print_arg(char *type, int nb, USR *regs, tools_t pr_tools)
 {
     int i = 0;
     if (type[strlen(type) - 1] == '*'
@@ -57,7 +57,8 @@ void p_args(USR *regs, tools_t pr_tools)
         print_arg(table[pr_tools.call_nb].p_types[i], i, regs, pr_tools);
         ++i;
     }
-    if (table[pr_tools.call_nb].nb_par != 1 && table[pr_tools.call_nb].nb_par != 0)
+    if (table[pr_tools.call_nb].nb_par \
+!= 1 && table[pr_tools.call_nb].nb_par != 0)
         printf(", ");
     print_arg(table[pr_tools.call_nb].p_types[i], i, regs, pr_tools);
     printf(")");
@@ -95,4 +96,3 @@ void p_retcode(USR *regs, int s_f, tools_t pr_tools)
     } else
         print_s_retcode(type, regs, pr_tools);
 }
-

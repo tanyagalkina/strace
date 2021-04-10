@@ -43,7 +43,8 @@ static const call_t table[] = {
 {20, "writev", 3, {"int", "struct  iovec *", "int"}, "ssize_t"},
 {21, "access", 2, {"char *", "int"}, "int"},
 {22, "pipe", 1, {"int[2]"},  "int"},
-{23, "select", 5, {"int", "fd_set *", "fd_set *", "fd_set *", "stuct timeval *"}, "int"},
+{23, "select", 5, {"int", "fd_set *", "fd_set *", "fd_set *", \
+"stuct timeval *"}, "int"},
 {24, "sched_yield", 0, {"void"}, "int"},
 {25, "mremap", 4, {"void *", "size_t", "size_t", "int"}, "void *"},
 {26, "msync", 3, {"void *", "size_t", "int"}, "int"},
@@ -67,7 +68,7 @@ static const call_t table[] = {
 {43, "accept", 3, {"int", "struct sockaddr *", "socklen_t"}, "int"},
 {44, "sendto", 6, {"int", "void *", "size_t", "int", \
 "struct sockaddr *", "socklen_t"}, "ssize_t"},
-{45, "recvfrom", 6,
+{45, "recvfrom", 6, \
 {"int", "void *", "size_t", "int", "struct sockaddr *", \
 "socklen_t *"}, "ssize_t"},
 {46, "sendmsg", 3, {"int", "struct msghdr *", "int"}, "ssize_t"},
